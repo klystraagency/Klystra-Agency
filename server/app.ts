@@ -6,6 +6,11 @@ import * as bcrypt from "bcrypt";
 import { registerRoutes } from "./routes";
 import { storage } from "./storage";
 
+// Extend Express Request interface instead
+interface RequestWithRawBody extends express.Request {
+  rawBody: unknown;
+}
+
 export function createApp() {
   const app = express();
 
@@ -51,14 +56,9 @@ export function createApp() {
     }
   });
 
-  declare module 'http' {
-    interface IncomingMessage { rawBody: unknown }
-  }
-
   app.use(express.json({
     verify: (req, _res, buf) => {
-      // @ts-ignore attach raw body for potential signature verification
-      (req as any).rawBody = buf;
+      (req as RequestWithRawBody).rawBody = buf;
     },
   }));
   app.use(express.urlencoded({ extended: false }));

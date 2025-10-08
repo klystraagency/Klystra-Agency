@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
+import { createServer } from "http";
 import { setupVite, serveStatic, log } from "./vite";
 import { createApp } from "./app";
 
@@ -10,7 +11,7 @@ const app = createApp();
 
 (async () => {
   // registerRoutes is invoked inside createApp
-  const server = require("http").createServer(app);
+  const server = createServer(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
