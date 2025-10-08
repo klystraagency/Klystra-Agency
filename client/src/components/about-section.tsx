@@ -1,3 +1,53 @@
+import { useState } from "react";
+import { Image as ImageIcon } from "lucide-react";
+
+interface ImageWithFallbackProps {
+  src: string;
+  alt: string;
+  className?: string;
+  fallbackIcon?: React.ReactNode;
+}
+
+function ImageWithFallback({ src, alt, className = "", fallbackIcon }: ImageWithFallbackProps) {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const handleError = () => {
+    console.error('Image failed to load:', src);
+    setImageError(true);
+    setImageLoading(false);
+  };
+
+  const handleLoad = () => {
+    setImageLoading(false);
+  };
+
+  if (imageError) {
+    return (
+      <div className={`${className} bg-muted flex items-center justify-center`}>
+        {fallbackIcon || <ImageIcon className="w-16 h-16 text-muted-foreground" />}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative">
+      {imageLoading && (
+        <div className={`${className} bg-muted animate-pulse flex items-center justify-center`}>
+          <ImageIcon className="w-16 h-16 text-muted-foreground" />
+        </div>
+      )}
+      <img 
+        src={src} 
+        alt={alt}
+        className={`${className} ${imageLoading ? 'opacity-0 absolute' : 'opacity-100'}`}
+        onError={handleError}
+        onLoad={handleLoad}
+      />
+    </div>
+  );
+}
+
 export default function AboutSection() {
   return (
     <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-card/30">
@@ -23,11 +73,10 @@ export default function AboutSection() {
           </div>
           
           <div className="relative">
-            <img 
+            <ImageWithFallback 
               src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
               alt="Modern digital agency workspace with multiple monitors" 
               className="rounded-xl shadow-2xl w-full h-auto transform hover:scale-105 transition-transform duration-500"
-              data-testid="img-office-workspace"
             />
             
             {/* Stats overlay */}

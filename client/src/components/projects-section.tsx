@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Github, Play } from "lucide-react";
+import { ExternalLink, Github, Play, Image as ImageIcon } from "lucide-react";
 import { SiInstagram, SiLinkedin, SiTiktok } from "react-icons/si";
 import type { WebsiteProject, VideoProject, SocialProject } from "@shared/schema";
 
@@ -9,6 +9,53 @@ const iconMap: Record<string, JSX.Element> = {
   linkedin: <SiLinkedin className="w-6 h-6" />,
   tiktok: <SiTiktok className="w-6 h-6" />
 };
+
+interface ImageWithFallbackProps {
+  src: string;
+  alt: string;
+  className?: string;
+  fallbackIcon?: React.ReactNode;
+}
+
+function ImageWithFallback({ src, alt, className = "", fallbackIcon }: ImageWithFallbackProps) {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const handleError = () => {
+    console.error('Image failed to load:', src);
+    setImageError(true);
+    setImageLoading(false);
+  };
+
+  const handleLoad = () => {
+    setImageLoading(false);
+  };
+
+  if (imageError) {
+    return (
+      <div className={`${className} bg-muted flex items-center justify-center`}>
+        {fallbackIcon || <ImageIcon className="w-8 h-8 text-muted-foreground" />}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative">
+      {imageLoading && (
+        <div className={`${className} bg-muted animate-pulse flex items-center justify-center`}>
+          <ImageIcon className="w-8 h-8 text-muted-foreground" />
+        </div>
+      )}
+      <img 
+        src={src} 
+        alt={alt}
+        className={`${className} ${imageLoading ? 'opacity-0 absolute' : 'opacity-100'}`}
+        onError={handleError}
+        onLoad={handleLoad}
+      />
+    </div>
+  );
+}
 
 export default function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState("websites");
@@ -24,6 +71,7 @@ export default function ProjectsSection() {
   const { data: socialProjects = [], isLoading: socialLoading } = useQuery<SocialProject[]>({
     queryKey: ["/api/projects/social"]
   });
+
 
   const categories = [
     { id: "websites", label: "Website Development" },
@@ -75,7 +123,7 @@ export default function ProjectsSection() {
                   className="project-card rounded-xl overflow-hidden"
                   data-testid={`website-project-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
                 >
-                  <img 
+                  <ImageWithFallback 
                     src={project.image} 
                     alt={project.title}
                     className="w-full h-48 object-cover" 
@@ -133,6 +181,10 @@ export default function ProjectsSection() {
                           className="w-full h-full"
                           controls
                           poster={project.thumbnail}
+                          onError={(e) => {
+                            console.error('Video failed to load:', project.videoUrl);
+                            console.error('Thumbnail failed to load:', project.thumbnail);
+                          }}
                         >
                           <source src={project.videoUrl} />
                         </video>
@@ -202,18 +254,28 @@ export default function ProjectsSection() {
                       </div>
                     </div>
                     
-                    {project.images && project.images !== "[]" && (
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        {JSON.parse(project.images).map((image: string, index: number) => (
-                          <img 
-                            key={index}
-                            src={image} 
-                            alt={`${project.title} photo ${index + 1}`}
-                            className="w-full h-20 object-cover rounded" 
-                          />
-                        ))}
-                      </div>
-                    )}
+                    {project.images && project.images !== "[]" && (() => {
+                      try {
+                        const parsedImages = JSON.parse(project.images);
+                        if (Array.isArray(parsedImages) && parsedImages.length > 0) {
+                          return (
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                              {parsedImages.map((image: string, index: number) => (
+                                <ImageWithFallback 
+                                  key={index}
+                                  src={image} 
+                                  alt={`${project.title} photo ${index + 1}`}
+                                  className="w-full h-20 object-cover rounded" 
+                                />
+                              ))}
+                            </div>
+                          );
+                        }
+                      } catch (error) {
+                        console.error('Error parsing social project images:', error, project.images);
+                      }
+                      return null;
+                    })()}
 
                     {project.leadCount && (
                       <div className="bg-card/50 rounded-lg p-4 mb-4 border border-border">
