@@ -52,7 +52,7 @@ export function createApp() {
       const user = await storage.getUser(id);
       done(null, user);
     } catch (error) {
-      done(error);
+      done(error); 
     }
   });
 
