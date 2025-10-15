@@ -5,6 +5,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
 import { registerRoutes } from "./routes";
 import { storage } from "./storage";
+import cors from "cors";
 
 // Extend Express Request interface instead
 interface RequestWithRawBody extends express.Request {
@@ -13,6 +14,14 @@ interface RequestWithRawBody extends express.Request {
 
 export function createApp() {
   const app = express();
+
+  // CORS for frontend origin
+  app.use(cors({
+    origin: process.env.CORS_ORIGIN?.split(",") || "*",
+    credentials: true,
+    methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+    allowedHeaders: ["Content-Type","Authorization"],
+  }));
 
   // Session configuration
   app.use(session({

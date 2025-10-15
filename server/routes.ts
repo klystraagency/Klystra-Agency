@@ -151,6 +151,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Combined projects endpoint for frontend
+  app.get("/api/projects", async (req, res) => {
+    try {
+      const [websiteProjects, videoProjects, socialProjects] = await Promise.all([
+        storage.getAllWebsiteProjects(),
+        storage.getAllVideoProjects(),
+        storage.getAllSocialProjects()
+      ]);
+      
+      res.json({
+        website: websiteProjects,
+        video: videoProjects,
+        social: socialProjects
+      });
+    } catch (error) {
+      console.error("Error fetching all projects:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  });
+
   app.get("/api/projects/website", async (req, res) => {
     try {
       const projects = await storage.getAllWebsiteProjects();
