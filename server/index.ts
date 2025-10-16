@@ -3,9 +3,14 @@ dotenv.config();
 
 import express, { Request, Response, NextFunction } from "express";
 import { createServer } from "http";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, log } from "./vite";
 import { createApp } from "./app";
 import path from "path";
+import { fileURLToPath } from "url";
+
+// ✅ Fix for __dirname not defined in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = createApp();
 
@@ -28,7 +33,7 @@ const app = createApp();
     const clientDist = path.join(__dirname, "../client/dist");
     app.use(express.static(clientDist));
 
-    // React Router fallback
+    // React Router fallback (for SPA)
     app.get("*", (_req: Request, res: Response) => {
       res.sendFile(path.join(clientDist, "index.html"));
     });
@@ -39,7 +44,7 @@ const app = createApp();
   // ✅ Port setup
   const port = parseInt(process.env.PORT || "5000", 10);
 
-  // ⚙️ Listen for production and local
+  // ⚙️ Run the server (Render needs this)
   server.listen(port, "0.0.0.0", () => {
     log(`🚀 Server running on port ${port}`);
   });
