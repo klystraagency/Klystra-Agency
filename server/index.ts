@@ -1,34 +1,46 @@
-import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
+import express, { Request, Response, NextFunction } from "express";
+import { createServer } from "http";
+import { setupVite, serveStatic, log } from "./vite";
+import { createApp } from "./app";
 import path from "path";
-import { ViteDevServer, createServer as createViteServer } from "vite";
-import type { Express } from "express";
 
-// 🧩 Vite setup for local development
-export async function setupVite(app: Express, server: any) {
-  const vite: ViteDevServer = await createViteServer({
-    server: { middlewareMode: true },
-    appType: "custom",
+const app = createApp();
+
+(async () => {
+  const server = createServer(app);
+
+  // ✅ Global error handler
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    res.status(status).json({ message });
+    console.error("Error:", err);
   });
 
-  app.use(vite.middlewares);
-  console.log("⚙️ Vite development server running...");
-}
+  if (process.env.NODE_ENV === "development") {
+    // ✅ Local dev mode (Vite + API)
+    await setupVite(app, server);
+  } else {
+    // ✅ Production mode (Render, Vercel, etc.)
+    const clientDist = path.join(__dirname, "../client/dist");
+    app.use(express.static(clientDist));
 
-// 🧱 Static serve setup for production (Render, Vercel, etc.)
-export function serveStatic(app: Express) {
-  const distPath = path.join(__dirname, "../client/dist");
+    // React Router fallback
+    app.get("*", (_req: Request, res: Response) => {
+      res.sendFile(path.join(clientDist, "index.html"));
+    });
 
-  app.use(express.static(distPath));
+    console.log("📦 Serving static files from:", clientDist);
+  }
 
-  // ✅ React Router fallback (for all frontend routes)
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(distPath, "index.html"));
+  // ✅ Port setup
+  const port = parseInt(process.env.PORT || "5000", 10);
+
+  // ⚙️ Listen for production and local
+  server.listen(port, "0.0.0.0", () => {
+    log(`🚀 Server running on port ${port}`);
   });
-
-  console.log("📦 Serving static files from:", distPath);
-}
-
-// 🪵 Simple logger
-export function log(message: string) {
-  console.log(`[Klystra-Agency] ${message}`);
-}
+})();
