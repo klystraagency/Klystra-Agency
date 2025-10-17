@@ -1,4 +1,4 @@
-import express, { type Request, Response, NextFunction } from "express";
+import express from "express";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
@@ -7,7 +7,6 @@ import { registerRoutes } from "./routes";
 import { storage } from "./storage";
 import cors from "cors";
 
-// Extend Express Request interface
 interface RequestWithRawBody extends express.Request {
   rawBody: unknown;
 }
@@ -15,17 +14,22 @@ interface RequestWithRawBody extends express.Request {
 export function createApp() {
   const app = express();
 
-  // ✅ CORS setup for Render frontend
+  // ✅ Proper CORS setup (especially for Render frontend)
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN?.split(",") || "*",
+      origin: process.env.CORS_ORIGIN?.split(",") || [
+        "https://klystra-agency-tol9.onrender.com",
+      ],
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
     })
   );
 
-  // ✅ Session configuration (Render HTTPS support)
+  // ✅ Trust Render proxy (important for secure cookies)
+  app.set("trust proxy", 1);
+
+  // ✅ Session configuration (Render fix)
   app.use(
     session({
       secret:
@@ -34,11 +38,10 @@ export function createApp() {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: process.env.NODE_ENV === "production", // Render uses HTTPS
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "lax", // ✅ fix for cross-origin cookie issue
-        path: "/", // ✅ make cookie available everywhere
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        sameSite: "none", // ✅ must be none for cross-origin cookies
+        maxAge: 24 * 60 * 60 * 1000,
       },
     })
   );
@@ -65,9 +68,7 @@ export function createApp() {
     })
   );
 
-  passport.serializeUser((user: any, done) => {
-    done(null, user.id);
-  });
+  passport.serializeUser((user: any, done) => done(null, user.id));
 
   passport.deserializeUser(async (id: string, done) => {
     try {
@@ -78,7 +79,7 @@ export function createApp() {
     }
   });
 
-  // ✅ JSON parsing
+  // ✅ Parse JSON safely
   app.use(
     express.json({
       verify: (req, _res, buf) => {
@@ -91,10 +92,10 @@ export function createApp() {
   // ✅ Serve uploaded files
   app.use("/uploads", express.static("uploads"));
 
-  // ✅ Lightweight API logger
+  // ✅ Simple API logger
   app.use((req, res, next) => {
     const start = Date.now();
-    let capturedJsonResponse: Record<string, any> | undefined = undefined;
+    let capturedJsonResponse: any;
     const originalResJson = res.json.bind(res);
     (res as any).json = (body: any, ...args: any[]) => {
       capturedJsonResponse = body;
@@ -110,9 +111,7 @@ export function createApp() {
             line += ` :: ${
               json.length > 200 ? json.slice(0, 200) + "…" : json
             }`;
-          } catch {
-            /* noop */
-          }
+          } catch {}
         }
         console.log(line);
       }
@@ -120,10 +119,10 @@ export function createApp() {
     next();
   });
 
-  // ✅ Register all backend routes
+  // ✅ Register backend routes
   void registerRoutes(app);
 
-  // ✅ Auto redirect after login (Render fix)
+  // ✅ Redirect logic for admin login
   app.get("/admin", (req, res) => {
     if ((req as any).isAuthenticated?.()) {
       res.redirect("/admin/dashboard");
