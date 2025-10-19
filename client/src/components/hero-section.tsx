@@ -22,7 +22,7 @@ export default function HeroSection() {
       
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <div className="animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
             <span className="text-foreground">Klystra</span>
             <span className="gradient-text ml-4">Agency</span>
           </h1>
