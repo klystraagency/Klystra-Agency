@@ -74,7 +74,7 @@ export default function AboutSection() {
           
           <div className="relative">
             <ImageWithFallback 
-              src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+              src="https://ibb.co/YnbBY5Y" 
               alt="Modern digital agency workspace with multiple monitors" 
               className="rounded-xl shadow-2xl w-full h-auto transform hover:scale-105 transition-transform duration-500"
             />
