@@ -25,13 +25,12 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-24 md:h-28">
           
+          {/* Logo */}
           <img
-  src="/logo.png"
-  alt="Company Logo"
-  className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-32"
-/>
-
-</div>
+            src="/logo.png"
+            alt="Company Logo"
+            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-32"
+          />
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
