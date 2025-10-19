@@ -27,7 +27,7 @@ export default function Navigation() {
           
           {/* Logo */}
           <img
-            src="/logo.png"
+            src="/logo.png.png"
             alt="Company Logo"
             className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-32"
           />
