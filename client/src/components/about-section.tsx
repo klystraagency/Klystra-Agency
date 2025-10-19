@@ -74,7 +74,7 @@ export default function AboutSection() {
           
           <div className="relative">
             <ImageWithFallback 
-              src="https://i.ibb.co/r8v2TBT/Chat-GPT-Image-Oct-19-2025-08-30-11-PM.png" 
+              src="https://i.ibb.co/p6xf9TzX/Gemini-Generated-Image-litkuslitkuslitk.png" 
               alt="Modern digital agency workspace with multiple monitors" 
               className="rounded-xl shadow-2xl w-full h-auto transform hover:scale-105 transition-transform duration-500"
             />
