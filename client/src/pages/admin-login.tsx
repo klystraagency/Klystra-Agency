@@ -136,7 +136,7 @@ export default function AdminLogin() {
         </div>
         
         <p className="text-center text-sm text-muted-foreground mt-6">
-          © 2024 Digital Dynasty. All rights reserved.
+          © 2024 Klystra Agency. All rights reserved.
         </p>
       </div>
     </div>
