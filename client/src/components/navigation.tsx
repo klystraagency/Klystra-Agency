@@ -29,7 +29,7 @@ export default function Navigation() {
           <img
             src="/logo.png"
             alt="Company Logo"
-            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-32"
+            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-28"
           />
 
           {/* Desktop Menu */}
