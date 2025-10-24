@@ -91,14 +91,14 @@ export default function ProjectsSection() {
           </p>
         </div>
         
-       {/* Project Category Tabs */}
-<div className="overflow-x-auto scrollbar-hide mb-12">
-  <div className="flex justify-center gap-2 bg-card rounded-xl p-2 border border-border max-w-2xl mx-auto min-w-max">
+      {/* Project Category Tabs */}
+<div className="flex justify-center mb-12">
+  <div className="flex flex-nowrap justify-center gap-2 bg-card rounded-xl p-2 border border-border max-w-full sm:max-w-2xl mx-auto">
     {categories.map((category) => (
       <button
         key={category.id}
         onClick={() => setActiveCategory(category.id)}
-        className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all duration-300 ${
+        className={`px-3 py-2 sm:px-5 sm:py-3 rounded-md sm:rounded-lg font-medium text-sm sm:text-base transition-all duration-300 whitespace-nowrap ${
           activeCategory === category.id
             ? "bg-primary text-primary-foreground"
             : "text-muted-foreground hover:text-foreground"
@@ -110,6 +110,7 @@ export default function ProjectsSection() {
     ))}
   </div>
 </div>
+
 
 
         {/* Website Development Projects */}
