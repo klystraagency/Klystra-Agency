@@ -91,14 +91,14 @@ export default function ProjectsSection() {
           </p>
         </div>
         
-   {/* Project Category Tabs */}
-<div className="overflow-x-auto scrollbar-hide mb-12">
-  <div className="flex flex-nowrap justify-center gap-2 bg-card rounded-xl p-2 border border-border max-w-2xl mx-auto min-w-max px-2">
+  {/* Project Category Tabs */}
+<div className="flex justify-center mb-12">
+  <div className="flex flex-wrap justify-center bg-card rounded-xl p-2 border border-border w-full max-w-2xl mx-auto">
     {categories.map((category) => (
       <button
         key={category.id}
         onClick={() => setActiveCategory(category.id)}
-        className={`px-3 py-2 sm:px-5 sm:py-3 rounded-md sm:rounded-lg font-medium text-sm sm:text-base whitespace-nowrap transition-all duration-300 ${
+        className={`flex-1 min-w-[100px] sm:min-w-[150px] md:min-w-[180px] mx-1 px-2 py-2 sm:px-4 sm:py-3 rounded-md sm:rounded-lg font-medium text-xs sm:text-sm md:text-base transition-all duration-300 text-center ${
           activeCategory === category.id
             ? "bg-primary text-primary-foreground"
             : "text-muted-foreground hover:text-foreground"
