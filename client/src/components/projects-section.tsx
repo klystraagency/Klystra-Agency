@@ -91,23 +91,26 @@ export default function ProjectsSection() {
           </p>
         </div>
         
-        {/* Project Category Tabs */}
-<div className="flex flex-wrap justify-center mb-12 bg-card rounded-xl p-2 border border-border max-w-2xl mx-auto">
-  {categories.map((category) => (
-    <button
-      key={category.id}
-      onClick={() => setActiveCategory(category.id)}
-      className={`px-3 py-2 sm:px-6 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-all duration-300 ${
-        activeCategory === category.id
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:text-foreground"
-      }`}
-      data-testid={`tab-${category.id}`}
-    >
-      {category.label}
-    </button>
-  ))}
+       {/* Project Category Tabs */}
+<div className="overflow-x-auto scrollbar-hide mb-12">
+  <div className="flex justify-center gap-2 bg-card rounded-xl p-2 border border-border max-w-2xl mx-auto min-w-max">
+    {categories.map((category) => (
+      <button
+        key={category.id}
+        onClick={() => setActiveCategory(category.id)}
+        className={`px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all duration-300 ${
+          activeCategory === category.id
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        data-testid={`tab-${category.id}`}
+      >
+        {category.label}
+      </button>
+    ))}
+  </div>
 </div>
+
 
         {/* Website Development Projects */}
         {activeCategory === "websites" && (
