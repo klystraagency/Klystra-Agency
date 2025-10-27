@@ -19,7 +19,8 @@ export function createApp() {
     cors({
       origin: process.env.CORS_ORIGIN?.split(",") || [
         "https://klystra-agency-tol9.onrender.com",
-      ],
+        process.env.NODE_ENV !== "production" ? "http://localhost:3000" : null,
+      ].filter(Boolean),
       credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
@@ -40,7 +41,7 @@ export function createApp() {
       cookie: {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "none", // ✅ must be none for cross-origin cookies
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // ✅ lax for localhost, none for production
         maxAge: 24 * 60 * 60 * 1000,
       },
     })
