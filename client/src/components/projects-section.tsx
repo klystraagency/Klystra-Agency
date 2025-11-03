@@ -134,22 +134,27 @@ export default function ProjectsSection() {
                     <h3 className="text-xl font-bold mb-2 text-foreground">{project.title}</h3>
                     <p className="text-muted-foreground mb-4 text-sm">{project.description}</p>
                     <div className="flex gap-3">
+                     <a 
+  href={project.demoUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+  data-testid={`link-demo-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
+>
+  <ExternalLink className="w-4 h-4" />
+  Live Demo
+</a>
                       <a 
-                        href={project.demoUrl}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                        data-testid={`link-demo-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Live Demo
-                      </a>
-                      <a 
-                        href={project.githubUrl}
-                        className="border border-border hover:border-primary text-foreground hover:text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
-                        data-testid={`link-github-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
-                      >
-                        <Github className="w-4 h-4" />
-                        GitHub
-                      </a>
+  href={project.githubUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="border border-border hover:border-primary text-foreground hover:text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+  data-testid={`link-github-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
+>
+  <Github className="w-4 h-4" />
+  GitHub
+</a>
+
                     </div>
                   </div>
                 </div>
