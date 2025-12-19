@@ -217,7 +217,7 @@ export default function ContactSection() {
                     data-testid="text-email"
                     aria-label="Email us at contact.klystra@gmail.com"
                   >
-                    contact.klystra@gmail.com
+                    contact.weblynx.hive@gmail.com
                   </a>
                 </div>
                
