@@ -55,7 +55,7 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              About <span className="gradient-text">Klystra Agency</span>
+              About <span className="gradient-text">Weblynx Hive</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
               Founded with a vision to revolutionize digital experiences, Klystra Agency stands at the forefront of innovation in the digital agency space. We combine creative excellence with technical expertise to deliver solutions that don't just meet expectations—they exceed them.
