@@ -58,7 +58,7 @@ export default function AboutSection() {
               About <span className="gradient-text">Weblynx Hive</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Founded with a vision to revolutionize digital experiences, Klystra Agency stands at the forefront of innovation in the digital agency space. We combine creative excellence with technical expertise to deliver solutions that don't just meet expectations—they exceed them.
+              Founded with a vision to revolutionize digital experiences, Weblynx Hive stands at the forefront of innovation in the digital agency space. We combine creative excellence with technical expertise to deliver solutions that don't just meet expectations—they exceed them.
             </p>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               Our team of passionate creators, developers, and strategists work collaboratively to bring your digital vision to life, ensuring every project reflects our commitment to quality and innovation.
