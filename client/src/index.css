@@ -82,18 +82,17 @@
   }
 }
 
-@layer utilities {
-  .gradient-text {
-    background: linear-gradient(
-      135deg,
-      hsl(173 80% 40%) 0%,   /* Teal #14B8A6 */
-      hsl(168 86% 85%) 100% /* Light Mint #CCFBF1 */
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    hsl(173 80% 40%),   /* Teal #14B8A6 */
+    hsl(168 86% 85%)    /* Mint #CCFBF1 */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 
   .tech-grid {
     background-image: 
