@@ -26,7 +26,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-24 md:h-28">
           {/* Logo */}
           <img
-            src="/logo.png"
+            src="/logonew.png"
             alt="Company Logo"
             className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain max-h-28"
           />
