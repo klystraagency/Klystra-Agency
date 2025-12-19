@@ -136,7 +136,7 @@ export default function ContactSection() {
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="contact.klystra@gmail.com"
+                          placeholder="contact.weblynx.hive@gmail.com"
                           {...field}
                           data-testid="input-email"
                         />
